@@ -4,7 +4,9 @@
     state: present
 
 - name: CREATE BACKUP FOLDER FOR OLD HTML CONTENT
-  path: "/tmp/BACK_UP_{{ansible_date_time.iso8601}}"
+  file:
+    path: "/tmp/BACK_UP_{{ansible_date_time.iso8601}}"
+    state: directory
   register: backup_folder
 
 - name: showing backup_folder 
