@@ -1,0 +1,6 @@
+---
+- name: "INSTALLING {{ APPNAME }}"
+  hosts: "{{ APPNAME }}"
+  become: yes
+  roles:
+    - "{{ APPNAME }}"
