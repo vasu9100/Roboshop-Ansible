@@ -17,5 +17,6 @@
   copy:
     src:  "/usr/share/nginx/html"
     dest: "/tmp/BACK_UP_{{ansible_date_time.iso8601}}"
+  remote_src: yes  
 
 
