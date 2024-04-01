@@ -1,22 +1,25 @@
-- name: INSTALLAING {{APPNAME}}
+
+- name: INSTALLING {{APPNAME}}
   dnf:
     name: nginx
     state: present
 
+- name: Calculate IST timestamp
+  set_fact:
+    ist_timestamp: "{{ ansible_date_time.iso8601 | to_datetime | timezone('Asia/Kolkata') }}"
+
 - name: CREATE BACKUP FOLDER FOR OLD HTML CONTENT
   file:
-    path: "/tmp/BACK_UP_{{ ansible_date_time.iso8601 | to_datetime | to_timezone('Asia/Kolkata') }}"
+    path: "/tmp/BACK_UP_{{ ist_timestamp }}"
     state: directory
   register: backup_folder
 
 - name: SHOWING BACKUP FOLDER 
   debug:
-    msg: "BACKUP_FOLDER: {{backup_folder}}"
+    msg: "BACKUP_FOLDER: {{ backup_folder }}"
 
-- name: COPY THE HTML CONETNT INTO BACK FOLDER
+- name: COPY THE HTML CONTENT INTO BACKUP FOLDER
   copy:
-    src:  "/usr/share/nginx/html"
-    dest: "/tmp/BACK_UP_{{ ansible_date_time.iso8601 | to_datetime | to_timezone('Asia/Kolkata') }}"
-    remote_src: yes  
-
-
+    src: "/usr/share/nginx/html"
+    dest: "/tmp/BACK_UP_{{ ist_timestamp }}"
+    remote_src: yes
