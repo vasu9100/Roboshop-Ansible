@@ -1,6 +1,6 @@
 - name: INSTALLAING {{APPNAME}}
   dnf:
-    name: ngnix
+    name: nginx
     state: present
 
 - name: CREATE BACKUP FOLDER FOR OLD HTML CONTENT
@@ -9,8 +9,13 @@
     state: directory
   register: backup_folder
 
-- name: showing backup_folder 
+- name: SHOWING BACKUP FOLDER 
   debug:
     msg: "BACKUP_FOLDER: {{backup_folder}}"
+
+- name: COPY THE HTML CONETNT INTO BACK FOLDER
+  copy:
+    src:  "/usr/share/nginx/html"
+    dest: "/tmp/BACK_UP_{{ansible_date_time.iso8601}}"
 
 
