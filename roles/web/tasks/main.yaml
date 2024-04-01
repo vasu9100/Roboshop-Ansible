@@ -5,12 +5,13 @@
     state: present
 
 - name: Calculate IST timestamp
-  set_fact:
-    ist_timestamp: "{{ ansible_date_time.iso8601 | to_datetime | timezone('Asia/Kolkata') }}"
+  command: date +'%Y-%m-%d_%H-%M-%S' --date='TZ="Asia/Kolkata"'
+
+  register: ist_timestamp
 
 - name: CREATE BACKUP FOLDER FOR OLD HTML CONTENT
   file:
-    path: "/tmp/BACK_UP_{{ ist_timestamp }}"
+    path: "/tmp/BACK_UP_{{ ist_timestamp.stdout }}"
     state: directory
   register: backup_folder
 
@@ -21,5 +22,5 @@
 - name: COPY THE HTML CONTENT INTO BACKUP FOLDER
   copy:
     src: "/usr/share/nginx/html"
-    dest: "/tmp/BACK_UP_{{ ist_timestamp }}"
+    dest: "/tmp/BACK_UP_{{ ist_timestamp.stdout }}"
     remote_src: yes
